@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SNOW // CRASH</title>
+  <link rel="icon" href="snowflake.png" type="image/png">
+  <style>
+    :root {
+      --bg: #000;
+      --fg: #eee;
+      --muted: #aaa;
+      --accent: #ff0033;
+      --maxw: 68ch;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--mono);
+      line-height: 1.6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6vh 1.25rem;
+    }
+
+    main {
+      width: 100%;
+      max-width: var(--maxw);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 0.75rem;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin: 0 0 2rem;
+      opacity: 0.85;
+      font-size: 0.95rem;
+    }
+
+    .stanza { margin: 1.5rem 0; }
+
+    .cuneiform {
+      display: block;
+      letter-spacing: 0.02em;
+    }
+
+    .translit {
+      color: var(--muted);
+      display: block;
+      margin-top: 0.3rem;
+    }
+
+    .translation {
+      font-style: italic;
+      display: block;
+      margin-top: 0.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .footer {
+      margin-top: 2rem;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .scroll-pad { display: none; }
+
+    /* Motion-safe micro-utility for future effects */
+    @media (prefers-reduced-motion: no-preference) {
+      .blink { animation: blink 1.2s steps(2, end) infinite; }
+      @keyframes blink { 50% { opacity: 0.6; } }
+    }
+
+    /* Accessibility helper if we want to visually hide something but keep it for screen readers */
+    .visually-hidden {
+      position: absolute !important;
+      height: 1px; width: 1px;
+      overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
+      white-space: nowrap; border: 0; padding: 0; margin: -1px;
+    }
+
+    /* Pair layering + no-wrap lines */
+    .line {
+      display: flex;
+      flex-wrap: nowrap;            /* keep one line */
+      gap: 0.4em;
+      justify-content: center;
+      align-items: baseline;
+      transform: translateZ(0);
+      will-change: transform;       /* smoother scaling */
+    }
+    .pair {
+      position: relative;
+      display: inline-block;
+      min-width: 0.2em;
+      white-space: nowrap;          /* keep tokens intact */
+      word-break: keep-all;
+      overflow-wrap: normal;
+      hyphens: none;
+    }
+    .pair .layer { position: absolute; inset: 0; opacity: 0; transition: opacity 120ms ease-out; }
+    .pair .layer.show { opacity: 1; }
+    .pair .layer.cunei { color: var(--fg); }
+    .pair .layer.trans { color: var(--muted); }
+
+    /* Reserve width to avoid jitter */
+    .pair .measurer { visibility: hidden; white-space: nowrap; }
+
+    /* Hide cuneiform globally when font not present */
+    .no-cunei [data-cunei], .no-cunei .line { display: none !important; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .pair .layer { transition: none; }
+    }
+
+    /* Mobile-only layout adjustments */
+    @media (pointer: coarse), (max-width: 799px) {
+      body { align-items: flex-start; }
+      .scroll-pad { display: block; height: 80vh; }
+    }
+  </style>
+</head>
+<body>
+  <main aria-labelledby="title">
+    <h1 id="title">SNOW//CRASH</h1>
+    <p class="subtitle visually-hidden">An inscription from the nam-šub of Enki</p>
+
+    <section class="stanza" data-stanza>
+      <span class="cuneiform" data-cunei>𒂗𒆠𒆤 𒅔𒅎𒈠 𒉡𒋛𒀊 𒅎𒅎𒅔𒅔𒄀𒄀</span>
+      <span class="translit" data-translit>en-ki-ke4 inim-ma nam-šub im-mi-in-gi4-gi4</span>
+      <span class="translation">(Enki, lord of abundance, … changed the speech in their mouths)</span>
+    </section>
+
+    <section class="stanza" data-stanza>
+      <span class="cuneiform" data-cunei>𒆠𒂗𒄀 𒆠𒌑𒊑 𒅔𒅎𒈠 𒌋𒍪 𒀀𒈾𒀭𒌑𒁕𒇻</span>
+      <span class="translit" data-translit>ki-en-gi ki-uri inim-ma u3-zu a-na-an-du11</span>
+      <span class="translation">(Into the speech of man, that had been one, he brought contention)</span>
+    </section>
+
+    <section class="stanza" data-stanza>
+      <span class="cuneiform" data-cunei>𒄀𒄒𒅔𒄀𒀀 𒅔𒅎𒈠 𒄿𒍪 𒀀𒈾𒀭𒌑𒁕𒇻</span>
+      <span class="translit" data-translit>gi-gun4-a inim-ma i-zu a-na-an-du11</span>
+      <span class="translation">(Into the speech of mankind, he brought discord)</span>
+    </section>
+
+    <section class="stanza" data-stanza>
+      <span class="cuneiform" data-cunei>𒅔𒅎𒈠 𒀭𒍪 𒀀𒈾𒀭𒌑𒁕𒇻</span>
+      <span class="translit" data-translit>inim an-zu a-na-an-du11</span>
+      <span class="translation">(Into the language of the gods he brought estrangement)</span>
+    </section>
+
+    <section class="stanza" data-stanza>
+      <span class="cuneiform" data-cunei>𒅔𒅎𒈠 𒀭𒈾 𒅔𒅎𒆠𒀀 𒅔𒅎𒈠 𒁕𒇻𒁕𒇻</span>
+      <span class="translit" data-translit>inim an-na inim ki-a inim-ma du11-du11</span>
+      <span class="translation">(Into the language of heaven and earth he brought division)</span>
+    </section>
+
+    <p class="footer">
+      BROUGHT TO YOU BY REVEREND WAYNE'S PEARLY GATES,<br />
+      IN CONJUNCTION WITH BOB L. RIFE LTD.
+    </p>
+
+    <div class="scroll-pad"></div>
+  </main>
+
+  <script>
+    (() => {
+      const CANDIDATE_FONTS = [
+        'Noto Sans Cuneiform', 'Akkadian', 'Cuneiform', 'BabelStone Cuneiform'
+      ];
+
+      const hasCuneiFont = () => {
+        if (!('fonts' in document)) return false;
+        const sample = '𒀭';
+        return CANDIDATE_FONTS.some(f => document.fonts.check('16px "' + f + '"', sample));
+      };
+
+      const isMobileLike = () => window.matchMedia('(pointer: coarse), (max-width: 799px)').matches;
+
+      const tokenise = (text) => text.trim().split(/\s+/);
+
+      const buildPairs = (stanza) => {
+        const cuneiEl = stanza.querySelector('[data-cunei]');
+        const transEl = stanza.querySelector('[data-translit]');
+        if (!cuneiEl || !transEl) return;
+        const cTokens = tokenise(cuneiEl.textContent);
+        const tTokens = tokenise(transEl.textContent);
+        const count = Math.min(cTokens.length, tTokens.length);
+
+        // container line replaces the two display lines for interactive mode
+        const line = document.createElement('div');
+        line.className = 'line';
+        line.setAttribute('role', 'text');
+
+        for (let i = 0; i < count; i++) {
+          const pair = document.createElement('span');
+          pair.className = 'pair';
+          pair.dataset.delay = (Math.random() * 30).toFixed(0); // 0–30ms (snappy)
+
+          // invisible measurer to preserve width
+          const measurer = document.createElement('span');
+          measurer.className = 'measurer';
+          measurer.textContent = cTokens[i].length >= tTokens[i].length ? cTokens[i] : tTokens[i];
+          pair.appendChild(measurer);
+
+          const layerC = document.createElement('span');
+          layerC.className = 'layer cunei show';
+          layerC.textContent = cTokens[i];
+          pair.appendChild(layerC);
+
+          const layerT = document.createElement('span');
+          layerT.className = 'layer trans';
+          layerT.textContent = tTokens[i];
+          pair.appendChild(layerT);
+
+          line.appendChild(pair);
+        }
+
+        // Replace original lines with interactive line
+        cuneiEl.replaceWith(line);
+        transEl.remove();
+      };
+
+      const togglePair = (pair, showTrans) => {
+        const delay = parseInt(pair.dataset.delay || '0', 10);
+        const c = pair.querySelector('.layer.cunei');
+        const t = pair.querySelector('.layer.trans');
+        if (!c || !t) return;
+        clearTimeout(pair._t1); clearTimeout(pair._t2);
+        if (showTrans) {
+          pair._t1 = setTimeout(() => { c.classList.remove('show'); t.classList.add('show'); }, delay);
+        } else {
+          pair._t2 = setTimeout(() => { t.classList.remove('show'); c.classList.add('show'); }, delay);
+        }
+      };
+
+      // Fit each .line to container width by down-scaling if needed
+      const fitLines = () => {
+        const container = document.querySelector('main');
+        if (!container) return;
+        const maxW = container.clientWidth;
+        document.querySelectorAll('.line').forEach(line => {
+          line.style.transformOrigin = 'center';
+          line.style.transform = 'translateZ(0)'; // reset
+          // force a reflow before measuring scrollWidth
+          const natural = line.scrollWidth;
+          if (natural > maxW) {
+            const scale = Math.max(0.75, maxW / natural); // never shrink below 75%
+            line.style.transformOrigin = 'center';
+            line.style.transform = `scale(${scale})`;
+          }
+        });
+      };
+
+      const initMobileScrollMode = () => {
+        const onScroll = () => {
+          const triggerY = Math.round(window.innerHeight * 0.55); // your setting
+          document.querySelectorAll('.pair').forEach(pair => {
+            const rect = pair.getBoundingClientRect();
+            const center = rect.top + rect.height / 2;
+            const pastLine = center < triggerY;
+            togglePair(pair, pastLine);
+          });
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', () => { onScroll(); fitLines(); });
+        onScroll();
+      };
+
+      const initDesktopHoverMode = () => {
+        const THRESH = 130; // px radius
+        const onMove = (e) => {
+          const { clientX: mx, clientY: my } = e;
+          document.querySelectorAll('.pair').forEach(pair => {
+            const r = pair.getBoundingClientRect();
+            const cx = r.left + r.width / 2; const cy = r.top + r.height / 2;
+            const dx = mx - cx; const dy = my - cy;
+            const d = Math.hypot(dx, dy);
+            togglePair(pair, d < THRESH);
+          });
+        };
+        window.addEventListener('mousemove', onMove, { passive: true });
+        window.addEventListener('resize', fitLines);
+      };
+
+      // --- boot ---
+      const cuneiPresent = hasCuneiFont();
+      if (!cuneiPresent) {
+        document.documentElement.classList.add('no-cunei');
+        return;
+      }
+
+      document.querySelectorAll('[data-stanza]').forEach(buildPairs);
+
+      if (isMobileLike()) {
+        initMobileScrollMode();
+      } else {
+        initDesktopHoverMode();
+      }
+
+      // Fit after layout & when fonts settle
+      fitLines();
+      if ('fonts' in document) {
+        document.fonts.ready.then(fitLines).catch(() => {});
+      }
+
+      // expose for quick tweaking
+      window._snow = window._snow || {};
+      window._snow.mode = isMobileLike() ? 'mobile' : 'desktop';
+      window._snow.fitLines = fitLines;
+    })();
+  </script>
+</body>
+</html>
