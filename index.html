@@ -267,7 +267,7 @@
 
       const initMobileScrollMode = () => {
         const onScroll = () => {
-          const triggerY = Math.round(window.innerHeight * 0.25); // your setting
+          const triggerY = Math.round(window.innerHeight * 0.35); // your setting
           document.querySelectorAll('.pair').forEach(pair => {
             const rect = pair.getBoundingClientRect();
             const center = rect.top + rect.height / 2;
